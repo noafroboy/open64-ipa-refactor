@@ -423,29 +423,26 @@ memory pools, counters, and output files. No locks needed.
 
 ---
 
-## Open Questions for Review
+## Design Decisions (resolved)
 
-1. **Should `IPA_Options` be a separate struct or just part of `IPA_Context`?**
-   Keeping it separate allows sharing across contexts (useful for LTO partitioning).
-   But adds indirection.
+1. **`IPA_Options` is a separate struct**, not part of `IPA_Context`.
+   It's not frequently used and won't be compute-intensive. Keeping it
+   separate allows sharing via `const IPA_Options*` across contexts.
 
-2. **Macro shim vs. direct rename for options?**
-   Macros are less disruptive but hide dependencies. Direct rename is cleaner but
-   touches 32+ files in one commit.
+2. **Macro shim for options migration.** Easier to verify everything
+   smoothly migrated before removing the shim.
 
-3. **Thread-local vs. parameter-passing for the transitional global?**
-   `g_ipa_ctx` could be a `thread_local` instead of a bare global — this gives
-   partial concurrency safety during the migration period. But thread_local may
-   have performance implications and isn't standard C++98 (Open64 is old C++).
+3. **Parameter-passing for context threading** (not thread-local).
+   Cleaner design. `g_ipa_ctx` is a transitional global that gets
+   replaced by explicit `IPA_Context*` parameters in Phase 3e.
 
-4. **MEM_POOL investigation**: Is `MEM_POOL` itself safe to instantiate
-   per-context, or does it depend on global allocator state?
+4. **MEM_POOL**: Needs separate investigation. See `mempool-investigation.md`.
 
-5. **Incremental testing**: How do we verify each migration step doesn't
-   change behavior? Suggestion: compile a reference program before and after,
-   diff the compiler output (WHIRL or assembly).
+5. **Incremental testing**: Deferred — needs more thinking on the right
+   verification strategy.
 
-6. **Scope of this effort**: Is the goal to get to "two contexts compile
-   correctly" or just "globals are encapsulated for future parallelism"?
-   The former requires solving ipacom_doit() and MEM_POOL issues. The latter
-   is achievable with just the struct migration.
+6. **Scope: Globals encapsulated for future parallelism.** We are NOT
+   targeting "two contexts running concurrently" in this effort.
+   The goal is structural: move globals into structs so that future
+   parallelism work has a clean foundation. This means ipacom_doit()
+   and MEM_POOL concurrency issues are out of scope for Phase 3.

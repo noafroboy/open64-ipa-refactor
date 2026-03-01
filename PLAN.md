@@ -21,7 +21,7 @@ Coordinator (main context) + Scout subagents + Disk files as shared memory.
 - [x] Design `IPA_Context` struct grouping related globals → `design.md` DRAFT
 - [x] Define API boundaries and threading strategy → in `design.md`
 - [ ] Review open questions in `design.md` with user
-- [ ] Investigate MEM_POOL internals (prerequisite for Phase 3c)
+- [x] Investigate MEM_POOL internals → `mempool-investigation.md` COMPLETE. Fixable with ~100 lines of changes.
 
 ### Phase 3: Incremental Migration
 - [ ] Convert globals one subsystem at a time, keeping build green
@@ -40,4 +40,5 @@ Coordinator (main context) + Scout subagents + Disk files as shared memory.
 | `entry-points.md` | IPA entry functions and call flow | COMPLETE |
 | `dependencies.md` | Global state dependency clusters (661 lines) | COMPLETE |
 | `design.md` | Context struct design (~300 lines) | DRAFT |
+| `mempool-investigation.md` | MEM_POOL system analysis | COMPLETE |
 | `migration-progress.md` | Per-subsystem migration tracking | Pending |
