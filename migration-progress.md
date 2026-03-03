@@ -1,7 +1,7 @@
 # IPA Refactor Phase 3 — Migration Progress
 
 ## Current Status
-- **Current Step**: 8 (Migrate Common-Block State)
+- **Current Step**: 13 (Migrate Merge State)
 - **Branch**: `refactor/ipa-context` on `noafroboy/open64`
 - **Base**: `origin/develop`
 
@@ -17,11 +17,11 @@
 | 5 | Migrate array-section state | done | ecb0e6f5 | 2026-03-02 |
 | 6 | Migrate reorder state | done | ecb0e6f5 | 2026-03-02 |
 | 7 | Migrate CHG state | done | ecb0e6f5 | 2026-03-02 |
-| 8 | Migrate common-block state | pending | — | — |
-| 9 | Migrate compile state | pending | — | — |
-| 10 | Migrate alias-analysis state | pending | — | — |
-| 11 | Migrate inline stats | pending | — | — |
-| 12 | Migrate cprop state | pending | — | — |
+| 8 | Migrate common-block state | done | 55b528be | 2026-03-02 |
+| 9 | Migrate compile state | skipped | — | — (file-static, not extern) |
+| 10 | Migrate alias-analysis state | skipped | — | — (file-static, not extern) |
+| 11 | Migrate inline stats + IPA_Graph_Undirected | done | 226df57c | 2026-03-02 |
+| 12 | Migrate cprop state | done | 226df57c | 2026-03-02 |
 | 13 | Migrate merge state | pending | — | — |
 | 14 | Migrate IPA_Options reads (config_ipa globals) | pending | — | — |
 | 15 | Migrate call-graph pointer | pending | — | — |
