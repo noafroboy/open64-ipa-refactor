@@ -142,7 +142,11 @@ Before ending any session:
 1. Read migration-progress.md → identify next step N
 2. Read migration-steps/step-N.md (or write it if doesn't exist)
 3. Make the code changes
-4. Build: ./build-open64-docker.sh
+4. Build: docker rm -f open64-build; rm -rf /tmp/open64-generated; ./build-open64-docker.sh "$(pwd)"
+   - Build takes ~10 minutes (measured 2026-03-02)
+   - Must pass "$(pwd)" explicitly — script default path is wrong
+   - Run in background, check every ~3 min with tail
+   - Verify: docker exec open64-build ls /build/osprey/targdir/driver/opencc
 5. If build fails → fix → rebuild
 6. Commit with descriptive message
 7. Update migration-progress.md (status, commit hash, build result)
