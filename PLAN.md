@@ -26,6 +26,7 @@ Coordinator (main context) + Scout subagents + Disk files as shared memory.
 ### Phase 3: Incremental Migration
 - [ ] Convert globals one subsystem at a time, keeping build green
 - [ ] Track per-subsystem progress → `migration-progress.md`
+- Detailed execution plan, branching strategy, and recovery protocol → `phase3-execution-plan.md`
 
 ### Phase 4: Validation
 - [ ] Prove two IPA instances can run without interference
@@ -41,4 +42,5 @@ Coordinator (main context) + Scout subagents + Disk files as shared memory.
 | `dependencies.md` | Global state dependency clusters (661 lines) | COMPLETE |
 | `design.md` | Context struct design (~300 lines) | DRAFT |
 | `mempool-investigation.md` | MEM_POOL system analysis | COMPLETE |
+| `phase3-execution-plan.md` | Phase 3 branching, commit plan, recovery protocol | Active |
 | `migration-progress.md` | Per-subsystem migration tracking | Pending |
