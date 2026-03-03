@@ -50,16 +50,23 @@ Each commit must be **build-green** (verified via Docker build).
 | 6 | Migrate field reorder globals to IPA_Context | 3b.5 | 3 |
 | 7 | Migrate devirt/CHG globals to IPA_Context | 3b.6 | 4 |
 | 8 | Migrate common/padding globals to IPA_Context | 3b.7 | 3 |
-| 9 | Migrate cprop state globals to IPA_Context | 3c.1 | 3 |
-| 10 | Migrate inline stats globals to IPA_Context | 3c.2 | 5+ |
-| 11 | Migrate symtab merge globals to IPA_Context | 3c.3 | 2 |
-| 12 | Add ipa_options_compat.h macro shim | 3c.4 | 1 new |
-| 13 | Migrate ~140 option flags via macro shim | 3c.4 | 32+ |
-| 14 | Migrate Summary/Local globals (IPL_Context) | 3d.1 | 14 |
-| 15 | Migrate alias class globals (crosses be/com) | 3d.2 | 6 |
-| 16 | Migrate call graph + node context globals | 3d.3 | 21 |
-| 17 | Thread IPA_Context* through entry points, remove g_ipa_ctx shim | 3e | entry points |
-| 18 | Remove ipa_options_compat.h macro shim | 3e | 32+ |
+| 9 | Migrate compilation context globals to IPA_Context | 3b.8 | 2-3 |
+| 10 | Migrate IPAA state globals to IPA_Context | 3b.9 | 2-3 |
+| 11 | Migrate cprop state globals to IPA_Context | 3c.1 | 3 |
+| 12 | Migrate inline stats globals to IPA_Context | 3c.2 | 5+ |
+| 13 | Migrate symtab merge globals to IPA_Context | 3c.3 | 2 |
+| 14 | Add ipa_options_compat.h macro shim | 3c.4 | 1 new |
+| 15 | Migrate ~140 option flags via macro shim | 3c.4 | 32+ |
+| 16 | Migrate Summary/Local globals (IPL_Context) | 3d.1 | 14 |
+| 17 | Migrate alias class globals (crosses be/com) | 3d.2 | 6 |
+| 18 | Migrate call graph + node context globals | 3d.3 | 21 |
+| 19 | Thread IPA_Context* through entry points, remove g_ipa_ctx shim | 3e | entry points |
+| 20 | Remove ipa_options_compat.h macro shim | 3e | 32+ |
+
+> **Note (2026-03-02):** Steps 9-10 were added after cross-checking the research docs
+> against the original commit plan. Two clusters were missing:
+> - **CompilationContext** (step 9): ~14 globals in `ipc_compile.cxx` — infiles, outfiles, makefile state, toolchain paths
+> - **AliasAnalysisState** (step 10): ~16 globals in `ipaa.cxx` — IPAA memory pools, trace flags, counters (distinct from the Alias Classification globals in step 17)
 
 ---
 
