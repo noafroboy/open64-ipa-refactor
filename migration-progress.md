@@ -3,6 +3,7 @@
 ## Current Status
 - **Current Step**: 17 (completed — lifecycle calls wired up)
 - **Branch**: `refactor/ipa-context` on `noafroboy/open64`
+- **Step 14 branch**: `refactor/ipa-options-shim` on `noafroboy/open64` (PR #2)
 - **Base**: `origin/develop`
 
 ## Step Log
@@ -23,7 +24,7 @@
 | 11 | Migrate inline stats + IPA_Graph_Undirected | done | 5006fe9d | 2026-03-02 |
 | 12 | Migrate cprop state | done | 5006fe9d | 2026-03-02 |
 | 13 | Migrate merge state | done | db8d8cb5 | 2026-03-03 |
-| 14 | Migrate IPA_Options reads (config_ipa globals) | deferred | — | — Hundreds of replacements; can be done incrementally later |
+| 14 | Redirect config_ipa.h reads via macro shim | done | 78aa22c9 | 2026-03-03 — ipa_options_compat.h with ~150 macros; 12 .cxx files shimmed; PR #2 |
 | 15 | Migrate call-graph pointer + IPA_Call_Graph_Built | done | 9b4af881 | 2026-03-03 |
 | 16 | Migrate file-header table | partial | 9b4af881 | 2026-03-03 — Opt_Options_Inconsistent done; IP_File_header deferred (static-constructor init pattern) |
 | 17 | Add IPA_Context lifecycle calls at entry points | done | bceb780b | 2026-03-03 |
@@ -34,13 +35,14 @@
 ## Notes
 - 2026-03-02: History rebased to remove bogus copyright headers and "Phase 3" references from file content and commit messages. All SHAs changed. Review fix (lowercase IPA_Options fields) added as commit 1aa9c190.
 - Steps 9-10 are deferred, not cancelled. Their globals are file-static (not extern), so they don't contribute to cross-module coupling.
-- Step 14: The ~140 config_ipa.h globals are already snapshotted into g_ipa_options by IPA_Context_Init(). Replacing direct reads (e.g., `IPA_Enable_DFE` → `g_ipa_options->enable_DFE`) across ~30 files is tedious but mechanical. Can be done incrementally.
+- Step 14: Created `ipa_options_compat.h` macro shim — ~150 `#define` macros guarded by `IPA_CONTEXT_FULL_INIT` shadow config_ipa.h externs with `g_ipa_options->field` reads. Shimmed 12 `.cxx` files (read-only). Files with writes (`ipc_main.cxx`, `ipc_option.cxx`, `ipa_option.cxx`, `ipa_inline.cxx`, `ipa_cg.cxx`, `inline_driver.cxx`) and headers are excluded. Include must be placed after ALL other includes to avoid conflicts with re-declarations in `ipa_option.h`. On separate branch `refactor/ipa-options-shim` (PR #2).
 - Step 16: IP_File_header has a static-constructor pattern in init.cxx that takes its address before main(). Needs special handling.
 - Steps 18-19: Function parameter threading (~60-70 signatures, ~25 files) is the largest remaining task. Should be planned carefully with the user.
 
 ## Summary of What's Done
 All extern IPA globals identified in the audit are now encapsulated in IPA_Context sub-structs with backward-compatible #define macros:
 - Feedback FDs, struct-opt, visualization, array-section, reorder, CHG, common-block, inline stats, cprop, merge state (Aux_St_Tab, Aux_Pu_Table, etc.), call-graph pointer, Opt_Options_Inconsistent
+- Step 14: config_ipa.h reads in 12 .cxx files redirected through g_ipa_options via macro shim
 - IPA_Context_Init() is called at the main IPA driver entry point
 - IPA_Context_Alloc() is called at the inliner entry point
 - All 10 commits build successfully across all 3 targets (ipa, inline, lw_inline)
