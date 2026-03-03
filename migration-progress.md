@@ -1,7 +1,7 @@
 # IPA Refactor Phase 3 — Migration Progress
 
 ## Current Status
-- **Current Step**: 3 (Migrate Struct-Opt State)
+- **Current Step**: 4 (Migrate Visualization State)
 - **Branch**: `refactor/ipa-context` on `noafroboy/open64`
 - **Base**: `origin/develop`
 
@@ -12,7 +12,7 @@
 | 0 | Create branch & tracking | done | — | 2026-03-02 |
 | 1 | Add header files (ipa_options.h, ipa_context.h, ipa_context.cxx) | done | 243c7733 | 2026-03-02 |
 | 2 | Migrate feedback FDs | done | 091270c7 | 2026-03-02 |
-| 3 | Migrate struct-opt state | pending | — | — |
+| 3 | Migrate struct-opt state | done | e4bd47b1 | 2026-03-02 |
 | 4 | Migrate visualization state | pending | — | — |
 | 5 | Migrate array-section state | pending | — | — |
 | 6 | Migrate reorder state | pending | — | — |
